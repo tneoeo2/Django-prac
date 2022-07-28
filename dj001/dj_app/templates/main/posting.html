@@ -4,16 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog List</title>
+    <title>Posting</title>
 </head>
 <body>
-    <h1>게시판 페이지</h1>   
-    <table>
-    {% for list in postlist %}
-        <ul>
-            <li><a href="{{list.pk}}">{{list.postname}}</a></li>
-        </ul>
-    {% endfor %}
-    </table>
+    <h1>게시글 상세 페이지</h1>
+    <p>{{post.postname}}</p>
+    <p>{{post.contents}}</p>
+    <a href="/blog/">목록</a>
 </body>
 </html>
