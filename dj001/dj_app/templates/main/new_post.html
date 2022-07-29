@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>글쓰기 페이지</h1>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <!-- csrf: 사이트간 요청 위조 공격에 대한 취약성 보완하는 기능(djan)-->
         {% csrf_token %}     
         제목<br>
