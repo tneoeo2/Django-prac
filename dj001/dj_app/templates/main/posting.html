@@ -14,7 +14,8 @@
     {% if post.mainphoto %}
         <img src = "{{ post.mainphoto.url }}" alt="" height="600">
         <br>
-    {% endif %}
-    <a href="/blog/">목록</a>
+        {% endif %}
+        <a href="/blog/">목록</a>
+        <a href="/blog/{{post.pk}}/remove">삭제</a>
 </body>
 </html>

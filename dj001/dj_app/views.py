@@ -37,3 +37,14 @@ def new_post(request):
         return redirect('/blog/')                               #게시판 페이지로 redirect
     return render(request, 'main/new_post.html')
     
+def remove_post(request, pk):
+    post = Post.objects.get(pk=pk)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('/blog/')
+    
+    return render(request, 'main/remove_post.html', {'post': post})
+
+    
+    
+    
