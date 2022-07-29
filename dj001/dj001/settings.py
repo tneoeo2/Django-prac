@@ -14,7 +14,7 @@ from django.core.exceptions import ImproperlyConfigured
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent     ##? Path(__file__) : 현재 파일의 구상경로 인스턴스화  /// resolve() : 절대경로 반환(현재 파일경로:S:\CODE\Django\jango-prac\dj001\dj001\settings.py) .parent: 상위경로 반환
 
 
 # Quick-start development settings - unsuitable for production
@@ -136,3 +136,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#사진 저장될 공간 설정
+#프로젝트폴더(dj001)/media/ 가 생성된다!
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')     
+MEDIA_URL = '/media/'      

@@ -10,6 +10,11 @@
     <h1>게시글 상세 페이지</h1>
     <p>{{post.postname}}</p>
     <p>{{post.contents}}</p>
+    <!-- show Image -->
+    {% if post.mainphoto %}
+        <img src = "{{ post.mainphoto.url }}" alt="" height="600">
+        <br>
+    {% endif %}
     <a href="/blog/">목록</a>
 </body>
 </html>
