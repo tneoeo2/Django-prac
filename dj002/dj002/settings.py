@@ -46,12 +46,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles', 
+    'polls.apps.PollsConfig',        #PollsConfig(앱구성클래스 참조 추가)
+    
 ]
 
 MIDDLEWARE = [
