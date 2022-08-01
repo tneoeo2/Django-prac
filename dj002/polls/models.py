@@ -20,7 +20,7 @@ class Choice(models.Model):
   ##Question -- Choice: 1:N 관계 : N인 쪽에서 관계 선언(대상이 되는 클래스, 삭제시 이슈에 대한 설정)
   question = models.ForeignKey(Question, on_delete=models.CASCADE)      #ForeignKey :  Choice가 하나의 question에 관계한다는것을 알려줌
   choice_text = models.CharField(max_length=200)
-  votes = models.IntegerField(default=0)
+  votes = models.IntegerField(default=0)    #설문자 수
 
   def __str__(self):
     return self.choice_text
