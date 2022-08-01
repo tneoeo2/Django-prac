@@ -71,7 +71,7 @@ ROOT_URLCONF = 'dj002.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',    #templates 하위디렉토리 탐색
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
