@@ -14,7 +14,7 @@
       {% comment %} <li><a href="/polls/{{question.id}}/"> {{question.question_text}}</a></li> {% endcomment %}
       {% comment %} 하드코딩된 접근방식 수정(url 설정에 정의된 특정한 URL 경로 의존성 제거) {% endcomment %}
       {% comment %} URL 바꿀때는 polls/urls.py에서 수정해야함 {% endcomment %}
-      <li><a href="{% url 'polls: detail' question.id %}"> {{question.question_text}}</a></li>
+      <li><a href="{% url 'polls:detail' question.id %}"> {{question.question_text}}</a></li>
     {% endfor %}
   </ul>
   {% else %}
