@@ -11,7 +11,11 @@ class Question(models.Model):
   pub_date = models.DateTimeField('data publised')
 
   def was_published_recently(self):
-    return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+    now = timezone.now()
+    #최근 발행일은 어제가 아니고 미래도 아니게끔 수정
+    return now - datetime.timedelta(days=1) <= self.pub_date <= now
+      
+    # return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
   
   def __str__(self):
     return self.question_text
