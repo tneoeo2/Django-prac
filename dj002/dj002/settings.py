@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles', 
+    'django.contrib.staticfiles',   ##Staticfiles_finders : 다양한 소스에서 정적 파일을 찾는 방법을 알고 있는 파인더 목록: (default: AppdirectoriesDinder)
     'polls.apps.PollsConfig',        #PollsConfig(앱구성클래스 참조 추가)
     
 ]
