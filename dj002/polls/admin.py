@@ -16,6 +16,8 @@ class QuestionAdmin(admin.ModelAdmin):
   inlines = [ChoiceInline]    #Choice 객체는 Question 관리자 페이지에서 편집됨
     
   list_display = ('question_text', 'pub_date', 'was_published_recently')   #list보기에서 표시할 항목 설정
+  list_filter = ['pub_date']   #사이드바에 필터링 추가
+  search_fields = ['question_text']      # 검색 기능 추가: 변경 목록 위에 검색 창 추가(LIKE 쿼리 사용)
   
   
 

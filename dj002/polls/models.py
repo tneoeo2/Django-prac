@@ -1,15 +1,16 @@
 import datetime
 
+from django.contrib import admin
 from django.db import models
 from django.utils import timezone
 
 ##다-대-일(many-to-one), 다-대-다(many-to-many), 일-대-일(one-to-one) 과 같은 모든 일반 데이터베이스의 관계들를 지원
-
-
 class Question(models.Model):
   question_text = models.CharField(max_length=200)    #question_text, pub_data : 데이터베이스 필드 이름(컬럼명)
   pub_date = models.DateTimeField('data publised')
 
+  ##display() decorator 사용 
+  @admin.display(boolean=True, ordering='pub_date', description='Published recently?')   
   def was_published_recently(self):
     now = timezone.now()
     #최근 발행일은 어제가 아니고 미래도 아니게끔 수정
