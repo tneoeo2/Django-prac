@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -15,7 +16,10 @@ class IndexView(generic.ListView):
   context_object_name = 'latest_question_list'    #자동으로 생성되는 컨텍스트 변수 덮어쓰기(question_list 덮어쓰기)
 
   def get_queryset(self):
-    return Question.objects.order_by('-pub_date')[:5]     #최신순으로 정렬 5개의 -> 최신 5개 질문 뽑기
+    #timeznoe.now 보다 pub_date가 작거나 같은 Question을 포함하는 queryset반환하여 정렬(5개)
+    return Question.objects.filter(
+      pub_date__lte = timezone.now()).order_by('-pub_date')[:5]
+    # return Question.objects.order_by('-pub_date')[:5]     #최신순으로 정렬 5개의 -> 최신 5개 질문 뽑기
   
 class DetailView(generic.DetailView):
   model = Question
