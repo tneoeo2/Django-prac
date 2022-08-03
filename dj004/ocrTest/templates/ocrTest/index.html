@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static  %}
+  <link rel = "stylesheet" type="text/css" href="{% static 'ocrTest/css/bootstrap.min.css'%}" />
+  <link rel = "stylesheet" type="text/css" href="{% static 'ocrTest/css/index.css'%}" />
+  <title>Document</title>
+</head>
+<body>
+  <h1>OcrTest</h1>
+  <div class="content-container">
+  {% comment %} 이미지 넣기 {% endcomment %}
+  <div class="image-container">  </div>
+    <div class="bs-component mb-4">
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input class="form-control img-name" id="formFile" type="file" name="mainphoto">
+      <input class="btn btn-secondary my-2 my-sm-0" type="submit" value="이미지 업로드">
+    </div>
+    </form>  
+</div>
+</body>
+</html>

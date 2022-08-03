@@ -1,0 +1,25 @@
+.content-container{
+  display: flex;
+  flex-direction: column;
+
+}
+
+.bs-component{
+  margin-left: 2%;
+}
+
+.bs-component form{
+  display: flex;
+}
+
+.form-control{
+  max-width: 45%;
+  margin-right: 20px;
+}
+
+.image-container {
+  width: 600px;
+  height: 600px;
+  margin: 2%;
+  border: 0.8px solid lightblue;
+}
