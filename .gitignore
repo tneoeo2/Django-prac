@@ -131,3 +131,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 dj001/db.sqlite3
+dj004/media
