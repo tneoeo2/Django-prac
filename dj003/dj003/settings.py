@@ -40,7 +40,7 @@ SECRET_KEY = get_secret("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -52,7 +52,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mysite'
+    'mysite',
+    'drf_yasg',
+    'rest_framework',
+    
 ]
 
 MIDDLEWARE = [
@@ -95,9 +98,13 @@ DATABASES = {
         'NAME': 'dj003',   #생성한 데이터베이스 이름
         'USER': 'test',
         'PASSWORD': 'test',
-        'HOST': 'localhost',
+        'HOST': '127.0.0.1',
         'PORT':'3306',
-        
+        'OPOTION': {
+          'init_command': "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1;",
+          'autocommit': False,
+          'charset': 'utf8',
+        }
     }
 }
 
@@ -126,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asiz/Seoul'
 
 USE_I18N = True
 

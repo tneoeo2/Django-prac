@@ -10,7 +10,7 @@ app_name = 'mysite'
 
 urlpatterns = [
        path('', views.index, name='index'),
-       path('posts/', views.ListView.as_view(), name='posts'),
+      #  path('posts/', views.ListView.as_view(), name='posts'),
 ] 
 
 
