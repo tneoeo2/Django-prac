@@ -11,5 +11,11 @@ dj002
 
 
 dj003  
->-MySQL 연동 -  
+>-ㅡmariaDB & Swagger STUDY -    
+
+
+dj004
+>-OCRTEST-  
+
+
 

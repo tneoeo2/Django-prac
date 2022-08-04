@@ -3,7 +3,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
-from requests import post
 
 from .models import Post
 
@@ -18,4 +17,6 @@ def index(request):
         mainphoto=request.FILES['mainphoto']
       )
       print("image: ", request.FILES['mainphoto'])
+  else:
+    return render(request,'ocrTest/index.html')
   return render(request, 'ocrTest/index.html', {'mainphoto': request.FILES['mainphoto']})
