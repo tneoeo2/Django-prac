@@ -2,12 +2,16 @@ import os
 import sys
 import time
 import getpass
-from tkinter.tix import Tree
+import chromedriver_autoinstaller
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys 
 from selenium.webdriver.support.select import Select
 from bs4 import BeautifulSoup as bs
+
+
+chromedriver_autoinstaller.install() 
+
 
 print("id 입력 : ", end='')
 user_id = input()
@@ -28,7 +32,7 @@ def run():
     chrome_option.add_experimental_option("detach", True)
     # chrome_option.add_argument("headless")   #*창안보이게 실행
     # chrome_option.add_experimental_option('excludeSwitches', ['enable-logging'])
-    driver = webdriver.Chrome('crawler/chromedriver.exe', chrome_options=chrome_option)
+    driver = webdriver.Chrome(chrome_options=chrome_option)
     # driver = webdriver.PhantomJS(ptjs)
     
     return driver
@@ -59,9 +63,10 @@ def get_seat(driver):    #자리줍줍
             driver.find_element(By.PARTIAL_LINK_TEXT, "예매하기").click()   #예매하기
             break
         else:
-            time.sleep(2)
             driver.find_element(By.CLASS_NAME, "ui-icon-circle-triangle-e").click()
+            time.sleep(2)
             month = driver.find_element(By.CLASS_NAME, "ui-datepicker-month").text
+            
             
 def get_rank(driver):
                 
@@ -86,7 +91,9 @@ def get_rank(driver):
     top_navi = driver.find_element(By.CLASS_NAME, "perform-top")
     top_navi.find_element(By.PARTIAL_LINK_TEXT, "랭킹").click()
     print("랭킹 탐색")
+    time.sleep(2)
     driver.switch_to.window(driver.window_handles[-1])    #윈도우 창 전환
+    time.sleep(2)
       
     rank_best = driver.find_element(By.CLASS_NAME, "rank-best").text
     rank_list = driver.find_element(By.CLASS_NAME, "rank-list").text
