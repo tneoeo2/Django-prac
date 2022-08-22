@@ -94,15 +94,65 @@ def get_rank(driver):
     time.sleep(2)
     driver.switch_to.window(driver.window_handles[-1])    #윈도우 창 전환
     time.sleep(2)
+    
+    #랭킹 데이터 제목, 이미지, 기간, 장소 나눠서 저장 (dict 형태로 공연별 정보 저장)
+    """ 
+    #? dict 형식
+    goods_info = {
+      0: {
+        "title": ""      #제목       rlb-tit
+        ,"image": ""     #이미지     rank-best-img  > img
+        ,"place": ""     #장소      rlb-sub-tit     
+        ,"date": ""      #기간      rlb-sub-tit  (<br>로 구분)
+        ,"ranking": ""   #순위정보   rank-best-number
+      }.
+      1 : {
+        ...
+      }
+    } 
+    """
+    goods_info = {}
       
-    rank_best = driver.find_element(By.CLASS_NAME, "rank-best").text
-    rank_list = driver.find_element(By.CLASS_NAME, "rank-list").text
+      
+    #rank best dict 만들기
+    rank_best = driver.find_elements(By.CLASS_NAME, "rank-best > div")
+    # rank_best = 
+    for i, rank in enumerate(rank_best):
+      title = rank.find_element(By.CLASS_NAME, "rlb-tit").text
+      image = rank.find_element(By.TAG_NAME, "img").get_attribute('src')
+      date = rank.find_element(By.CLASS_NAME, "rlb-sub-tit").text.split('\n')[0]
+      place = rank.find_element(By.CLASS_NAME, "rlb-sub-tit").text.split('\n')[1]
+      ranking = rank.find_element(By.CLASS_NAME, "rank-best-number").text.split("\n")[0]
+      goods_info.update({ i : {"title": title, "image": image, "date": date, "place": place, "ranking": ranking }})
+    
+    # print("best_goods_info : \n", goods_info)
+    
+    
+    rank_list = driver.find_elements(By.CLASS_NAME, "rank-list > div")
+    
+    g_keys = list(goods_info.keys())
+    i = g_keys[-1]
+    for rank in rank_list:
+      i += 1
+      title = rank.find_element(By.CLASS_NAME, "rank-list-tit a").text
+      image = rank.find_element(By.TAG_NAME, "img").get_attribute('src')
+      date = rank.find_element(By.XPATH, "/html/body/div[5]/div[4]/div[1]/div[4]").text.split('\n')[0]
+      place = rank.find_element(By.XPATH, "/html/body/div[5]/div[4]/div[1]/div[4]").text.split('\n')[1]
+      ranking = rank.find_element(By.CLASS_NAME, "fluctuation span").text
+      goods_info.update({ i : {"title": title, "image": image, "date": date, "place": place, "ranking": ranking }})
+    
+      
+    
+    print(" goods_info : \n", goods_info)
+    
+    
+    
     
     # html = driver.page_source    #동적으로 내용 불러오는지 .....html  안읽어와짐..
     # soup = bs(html, 'html.parser')
     
-    print("rank_best: ",rank_best)
-    print("rank_list: ",rank_list)
+    # print("rank_best: ",rank_best)
+    # print("rank_list: ",rank_list)
     
     
 
@@ -127,8 +177,8 @@ def run_browser(driver):
                 print("popup element: ", pop)
             except:
                 pass
-    get_seat(driver) 
-    # get_rank(driver)            
+    # get_seat(driver) 
+    get_rank(driver)            
     time.sleep(500)
     
     driver.quit()
