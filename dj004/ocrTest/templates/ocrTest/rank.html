@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {%load static%}
+  <link rel = "stylesheet" type="text/css" href="{% static 'ocrTest/css/bootstrap.min.css'%}" />
+  <title>Document</title>
+</head>
+<body>
+  {% comment %} 크롤링 정보 확인  {% endcomment %}
+  <h1> Ranking - crawling test - </h1>
+  <div class="crl_container">
+  <button type="button" class="btn btn-primary" onclick=get_ranking()>Get Ranking</button>
+  {% comment %} <div>
+    {%if ranking_info != None%}
+    <p>
+      test test
+      {{ranking_info}}
+    <p>
+    {% endif %}
+
+  </div> {% endcomment %}
+</div>
+
+
+
+
+<script type="text/javascript"> 
+ function get_ranking() {
+    fetch("http://127.0.0.1:8000/get_rank/", {
+      method:"get",
+      headers:{
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => {
+      result = response.json();
+      console.log("result :  "+ result);
+      status_code = response.status;
+      if(status_code != 200){
+        console.log("Error in getting ranking info~~~")
+        return false;
+      }
+      return result
+    })
+    .then(result => {
+      console.log("===== ranking info =====");
+      console.log(result);
+      json_data = JSON.parse(result["ranking_info"]);
+      console.log(json_data);
+      show_ranking(json_data);
+
+      // Do something with the result
+
+  })
+  .catch(error => {
+      console.log(error);
+  })
+  
+
+ }
+
+
+function show_ranking(data){
+  let best_rank_div = document.createElement("div");
+  let best_rank_li = document.createElement("li"); 
+
+  for(i = 0; i <3; i++){
+    let textNode = document.createTextNode(data[i]);
+    best_rank_li.appendChild(textNode);
+    best_rank_div.appendChild(best_rank_li);
+  }
+  rank_div = document.querySelector(".crl_container");
+  rank_div.appendChild(best_rank_div);
+ }
+
+</script>
+</body>
+</html>

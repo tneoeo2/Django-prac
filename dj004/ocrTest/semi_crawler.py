@@ -143,10 +143,10 @@ def get_rank(driver):
     
       
     
-    print(" goods_info : \n", goods_info)
+    # print(" goods_info : \n", goods_info)
     
     
-    
+    return goods_info
     
     # html = driver.page_source    #동적으로 내용 불러오는지 .....html  안읽어와짐..
     # soup = bs(html, 'html.parser')
@@ -178,7 +178,11 @@ def run_browser(driver):
             except:
                 pass
     # get_seat(driver) 
-    get_rank(driver)            
+    goods_info = get_rank(driver)            
+    
+    
+    return goods_info
+    
     time.sleep(500)
     
     driver.quit()
@@ -187,7 +191,7 @@ def run_browser(driver):
 
 
 
-driver = run()
-run_browser(driver)
+# driver = run()
+# run_browser(driver)
 
 

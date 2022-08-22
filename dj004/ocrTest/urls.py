@@ -8,6 +8,8 @@ from django.conf import settings
 
 urlpatterns = [
     path('', index, name='index'),
+    path('rank/', rank, name='rank'),
+    path('get_rank/', get_rank, name='get_rank'),
 ]
 
 
