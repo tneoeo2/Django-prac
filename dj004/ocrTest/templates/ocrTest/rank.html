@@ -6,13 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {%load static%}
   <link rel = "stylesheet" type="text/css" href="{% static 'ocrTest/css/bootstrap.min.css'%}" />
+  <link rel = "stylesheet" type="text/css" href="{% static 'ocrTest/css/rank.css'%}" />
   <title>Document</title>
 </head>
 <body>
   {% comment %} 크롤링 정보 확인  {% endcomment %}
   <h1> Ranking - crawling test - </h1>
+
   <div class="crl_container">
+  </div>
   <button type="button" class="btn btn-primary" onclick=get_ranking()>Get Ranking</button>
+  <button type="button" class="btn btn-primary" onclick=save_ranking()>Save Ranking</button>
+</form>
+
   {% comment %} <div>
     {%if ranking_info != None%}
     <p>
@@ -22,7 +28,6 @@
     {% endif %}
 
   </div> {% endcomment %}
-</div>
 
 
 
@@ -47,10 +52,8 @@
     })
     .then(result => {
       console.log("===== ranking info =====");
-      console.log(result);
-      json_data = JSON.parse(result["ranking_info"]);
-      console.log(json_data);
-      show_ranking(json_data);
+      console.log("json_data : " + result);
+      show_ranking(result);
 
       // Do something with the result
 
@@ -62,19 +65,53 @@
 
  }
 
-
-function show_ranking(data){
+async function show_ranking(data){                  //동적으로 크롤링한 데이터 띄워주는 함수
   let best_rank_div = document.createElement("div");
-  let best_rank_li = document.createElement("li"); 
+  best_rank_div.className = "best_rank";   
+  for(i = 0; i <30; i++){      //50개 까지 설정 가능
+    let best_rank_ul = document.createElement("ul");
 
-  for(i = 0; i <3; i++){
-    let textNode = document.createTextNode(data[i]);
-    best_rank_li.appendChild(textNode);
-    best_rank_div.appendChild(best_rank_li);
+    let title_li = document.createElement("li"); 
+    let image_li = document.createElement("li"); 
+    let place_li = document.createElement("li"); 
+    let date_li = document.createElement("li"); 
+    let rank_li = document.createElement("li"); 
+
+    let titleNode = document.createTextNode(data[i]['title']);
+    let imageNode = document.createElement("img");
+    imageNode.src = data[i]['image'];
+    let placeNode = document.createTextNode(data[i]['place']);
+    let dateNode = document.createTextNode(data[i]['date']);
+    let rankNode = document.createTextNode(data[i]['ranking']);
+
+    title_li.appendChild(titleNode);
+    image_li.appendChild(imageNode);
+    place_li.appendChild(placeNode);
+    date_li.appendChild(dateNode);
+    rank_li.appendChild(rankNode);
+
+    best_rank_ul.appendChild(title_li);
+    best_rank_ul.appendChild(image_li);
+    best_rank_ul.appendChild(place_li);
+    best_rank_ul.appendChild(date_li);
+    best_rank_ul.appendChild(rank_li);
+
+    best_rank_div.appendChild(best_rank_ul);
   }
   rank_div = document.querySelector(".crl_container");
   rank_div.appendChild(best_rank_div);
- }
+
+  await document.querySelectorAll("li").forEach(elm => elm.className = 'list-group-item')
+  
+}
+
+function save_ranking(){
+  fetch("http://127.0.0.1:8000/save/")
+
+
+}
+
+
 
 </script>
 </body>

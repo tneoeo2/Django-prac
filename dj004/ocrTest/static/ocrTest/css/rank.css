@@ -1,0 +1,16 @@
+.crl_container img {
+  width: 50%
+}
+
+.crl_container ul{
+  display: flex;
+  flex-direction: row;
+  align-items:center;
+  }
+
+.crl_container li{
+  width : 30% !important;
+  margin-right: 2%;
+  }
+
+
