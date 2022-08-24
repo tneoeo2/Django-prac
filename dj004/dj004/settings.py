@@ -53,18 +53,25 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ocrTest',
     'drf_yasg',
+    'corsheaders',
     'rest_framework'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://127.0.0.1:8000', 'https://localhost:8000' 
+]
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'dj004.urls'
 

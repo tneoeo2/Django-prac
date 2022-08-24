@@ -14,6 +14,7 @@ chromedriver_autoinstaller.install()
 
 
 
+
 ptjs = "S://devtool//phantomjs-2.1.1-windows//bin//phantomjs"    #* phatomjs 경로
 # warnings.filterwarnings('ignore')
 

@@ -7,17 +7,10 @@ class Post(models.Model):
   photoname = models.CharField(max_length=50)
 
   def __str__(self):
-    return self.photoname
-
-class RankPost(models.Model):
-  pub_date = models.DateTimeField("data published...")
-  
-  def __str__(self):
-    return self.pub_date
-  
+    return self.photoname  
 
 class Ranking(models.Model):
-  pub_date = models.ForeignKey(RankPost, on_delete=models.CASCADE)
+  pub_date = models.DateTimeField("data published...")
   title = models.CharField(max_length=100)
   image = models.ImageField(blank=True, null=True, upload_to='rank')
   start_date = models.DateField()         #시작 날짜
