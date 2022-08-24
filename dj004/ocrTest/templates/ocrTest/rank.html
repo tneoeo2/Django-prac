@@ -15,9 +15,17 @@
 
   <div class="crl_container">
   </div>
-  <button type="button" class="btn btn-primary" onclick=get_ranking()>Get Ranking</button>
-  <button type="button" class="btn btn-primary" onclick=save_ranking()>Save Ranking</button>
-</form>
+  <button type="button" class="btn btn-primary" onclick=getRanking()>Get Ranking</button>
+  <button type="button" class="btn btn-primary" onclick=saveRanking()>Save Ranking</button>
+
+  <form action="/ocr/" target="_blank" method="post" enctype="multipart/form-data" style="display:none;">
+    {% csrf_token %}
+    <input class="form-control img-name" id="formFile" type="text" name="mainphoto" style="display:none;">
+    <input class="btn btn-secondary my-2 my-sm-0" id="formSubmit" type="submit" value="이미지 업로드" style="display:none;">
+  </div>
+  </form>  
+
+
 
   {% comment %} <div>
     {%if ranking_info != None%}
@@ -32,8 +40,11 @@
 
 
 
-<script type="text/javascript"> 
- function get_ranking() {
+<script type="text/javascript">
+
+let jsonData = "test";
+
+function getRanking() {
     fetch("http://127.0.0.1:8000/get_rank/", {
       method:"get",
       headers:{
@@ -53,7 +64,8 @@
     .then(result => {
       console.log("===== ranking info =====");
       console.log("json_data : " + result);
-      show_ranking(result);
+      jsonData = result;
+      showRanking(result);
 
       // Do something with the result
 
@@ -61,21 +73,23 @@
   .catch(error => {
       console.log(error);
   })
-  
+
 
  }
 
-async function show_ranking(data){                  //동적으로 크롤링한 데이터 띄워주는 함수
+
+ function showRanking(data){                  //동적으로 크롤링한 데이터 띄워주는 함수
   let best_rank_div = document.createElement("div");
-  best_rank_div.className = "best_rank";   
+  best_rank_div.className = "best_rank";
   for(i = 0; i <30; i++){      //50개 까지 설정 가능
+    
     let best_rank_ul = document.createElement("ul");
 
-    let title_li = document.createElement("li"); 
-    let image_li = document.createElement("li"); 
-    let place_li = document.createElement("li"); 
-    let date_li = document.createElement("li"); 
-    let rank_li = document.createElement("li"); 
+    let title_li = document.createElement("li");
+    let image_li = document.createElement("li");
+    let place_li = document.createElement("li");
+    let date_li = document.createElement("li");
+    let rank_li = document.createElement("li");
 
     let titleNode = document.createTextNode(data[i]['title']);
     let imageNode = document.createElement("img");
@@ -101,17 +115,101 @@ async function show_ranking(data){                  //동적으로 크롤링한 
   rank_div = document.querySelector(".crl_container");
   rank_div.appendChild(best_rank_div);
 
-  await document.querySelectorAll("li").forEach(elm => elm.className = 'list-group-item')
+  document.querySelectorAll("li").forEach(elm => elm.className = 'list-group-item')
+  ocrImg();
+
+}
+
+function getCookie(name) {
+  if (!document.cookie) {
+    return null;
+  }
+
+  const xsrfCookies = document.cookie.split(';')
+    .map(c => c.trim())
+    .filter(c => c.startsWith(name + '='));
+
+  if (xsrfCookies.length === 0) {
+    return null;
+  }
+  return decodeURIComponent(xsrfCookies[0].split('=')[1]);
+}
+
+
+function saveRanking(data){
+   fetch("http://127.0.0.1:8000/save/",  {
+    method: "post",
+    //mode: 'cors',
+    //cache : 'no-cache',
+    //credentials: 'omit',  //자격증명 없음     //'same-origin', 요청URL이 이 스크립트와 같은 출처일때만 자격증명 전송
+    headers : {
+      "Content-Type": "application/json",
+      "X-CSRFToken": '{{csrf_token}}'
+    },
+    //redirect : "follow",
+    //referrerPolicy : 'no-referrer',
+    body : JSON.stringify(jsonData),  //데이터 유형 header과 일치
+  })
+  .then(response => {
+    result = response.json();
+    console.log("result :  "+ result);
+    status_code = response.status;
+    if(status_code != 200){
+      console.log("Error in getting ranking info~~~")
+      return false;
+    }
+    return result
+  })
+  .then(result => {
+    console.log("=====result  =====" +"\n" +result);
+    // Do something with the result
+
+})
+.catch(error => {
+    console.log(error);
+})
+
+}
+
+
+// 이미지 버튼 요소 추가
+function ocrImg() {
+  imgs = document.querySelectorAll(".list-group-item img");
+  imgs.forEach(img => img.addEventListener("click", event => {
+    console.log('img 클릭됨!!');
+    let formData = new FormData();
+    let imgSrc = img.src; 
+
+    document.querySelector('#formFile').value = imgSrc;
+    document.querySelector('#formSubmit').click();
+
+
+    //formData.append('mainphoto', imgSrc);
+    //console.log("mainphoto: " + formData.get('mainphoto'));
+    //Img2Ocr(formData);
+    
+
+  }))
   
 }
-
-function save_ranking(){
-  fetch("http://127.0.0.1:8000/save/")
-
-
+/*
+function Img2Ocr(data){
+    //index 페이지로 이미지 전송
+    fetch("http://127.0.0.1:8000/ocr/", {
+      method: 'POST',
+      headers:{
+        Authorization: sessionStorage.getItem('access_token'),
+        "X-CSRFToken": '{{csrf_token}}'
+      },
+      body: data
+    })
+   .then(result => {
+    console.log("result: " + result);
+    
+  })
+   .then(data => console.log(data))
 }
-
-
+*/
 
 </script>
 </body>

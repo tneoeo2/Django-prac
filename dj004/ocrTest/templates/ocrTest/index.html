@@ -14,17 +14,76 @@
   <div class="content-container">
   {% comment %} 이미지 넣기 {% endcomment %}
   <div class="image-container"> 
-    {%if mainphoto != None %}
-    <img src = "media/{{mainphoto}}" alt="" height="600" width="600" >
+    {%if 'http://' in mainphoto %}
+    <img src = "{{mainphoto}}" alt="" height="600" width="600" >
+    {% elif mainphoto != None %}
+    <img src = "/media/{{mainphoto}}" alt="" height="600" width="600" >
     {% endif %}
+
+    
+    
   </div>
-    <div class="bs-component mb-4">
-    <form action="" method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <input class="form-control img-name" id="formFile" type="file" name="mainphoto">
-      <input class="btn btn-secondary my-2 my-sm-0" type="submit" value="이미지 업로드">
-    </div>
-    </form>  
+  
+  
+  <div class="result-container">
+    
+    
+  </div>
 </div>
+<div class="bs-component mb-4">
+<form action="/ocr/" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <input class="form-control img-name" id="formFile" type="file" name="mainphoto">
+  <input class="btn btn-secondary my-2 my-sm-0" type="submit" value="이미지 업로드">
+  {% comment %} <input class="btn btn-secondary my-2 my-sm-0 ocr-btn" type="submit" value="OCR 결과확인"> {% endcomment %}
+  <button class="btn btn-secondary my-2 my-sm-0 ocr-btn" type="button" value="OCR 결과확인" onclick=fnRecoFetch()>OCR </button>
+</form>  
+</div>
+
 </body>
+
+<script type="text/javascript">
+ 
+  function fnRecoFetch(img){
+    let goUrl = "http://61.72.55.130:8999/ocr/imgUploadMulti/";
+    console.log("*************fnReocAjax*******************");
+
+    //let imgSrc = document.querySelector('.image-container img').src;
+    fileInput = document.querySelector("#formFile");
+
+    let myFormData = new FormData();
+    console.log("fileInput.files[0].name : "  + fileInput.files[0].name);
+    myFormData.append('file', fileInput.files[0].name);     //이미지 파일 경로
+    myFormData.append('ocrmode', "0");
+    myFormData.append('metaId', "0");
+    myFormData.append('docModelId', "0");
+
+    fetch(goUrl, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin':'*',
+        "X-CSRFToken": '{{csrf_token}}',
+    },
+    body: myFormData
+    })
+    .then(response => {
+      result = response.json();
+      console.log("result :  "+ result);
+      status_code = response.status;
+      if(status_code != 200){
+        console.log("Error in getting fnReocAjax~~~")
+        return false;
+      }
+      return result
+    })
+    .then(result => {
+      console.log("=====result =====" +"\n" +result);
+    })
+    .catch(error => {
+        console.log(error);
+    })
+
+  }
+</script>
 </html>

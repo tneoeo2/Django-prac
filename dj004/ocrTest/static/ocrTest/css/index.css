@@ -1,6 +1,7 @@
 .content-container{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
 
 }
 
@@ -10,10 +11,10 @@
 
 .bs-component form{
   display: flex;
+  justify-content: space-between;
 }
 
 .form-control{
-  max-width: 31%;
   margin-right: 20px;
 }
 
@@ -21,5 +22,21 @@
   width: 600px;
   height: 600px;
   margin: 2%;
+  margin-right: 10%;
   border: 0.8px solid lightblue;
+}
+
+.result-container{
+  width: 600px;
+  height: 600px;
+  margin: 2%;
+  border: 0.8px solid lightblue;
+  overflow-y: scroll;
+  pointer-events: visible;   
+  color: transparent;
+  text-shadow: 0 0 0 black;
+}
+
+.ocr-btn{
+  margin-left: 2%;
 }
