@@ -12,6 +12,7 @@ urlpatterns = [
     path('get_rank/', get_rank, name='get_rank'),
     path('save/', save, name='save'),
     path('ocr/', ocr, name='ocr'),
+    path('ocrAPI/', ocrAPI, name='ocrAPI'),
 ]
 
 

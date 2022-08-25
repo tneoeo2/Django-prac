@@ -1,4 +1,4 @@
-from msilib.schema import PublishComponent
+from urllib import response
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -10,17 +10,18 @@ from .models import  Ranking
 from .models import Post
 from .semi_crawler import *
 
+import requests
 import json
 
 ##후에 api로 ocr 결과 받아주는걸로 변경(사진 저장X)
 def ocr(request):
   print("request",request)
   # print("request_dir",dir(request))
-  
+  print("request.method: ", request.method)
   if request.method =="POST":
       print("POST request")
       try:
-        new_photo = request.POST['mainphoto']
+        new_photo = request.POST['file']
         print("new_photo-------",new_photo)
       
         return render(request, 'ocrTest/index.html', {'mainphoto':new_photo})
@@ -31,17 +32,17 @@ def ocr(request):
         # data = request.body
         # print("data-------",data)
         
-        if request.FILES['mainphoto']:
+        if request.FILES['file']:
           print("FILES request")
           new_photo = Post.objects.create(
             # postname=request.POST['photoname'],
-            mainphoto=request.FILES['mainphoto']
+            mainphoto=request.FILES['file']
           )
-          print("image: ", request.FILES['mainphoto'])
+          print("image: ", request.FILES['file'])
   else:
     return render(request,'ocrTest/index.html')
   
-  return render(request, 'ocrTest/index.html', {'mainphoto': request.FILES['mainphoto']})
+  return render(request, 'ocrTest/index.html', {'mainphoto': request.FILES['file']})
 
 def rank(request):
   
@@ -60,9 +61,29 @@ def get_rank(request):
   print("http Response=---------")
   return HttpResponse(json_rank_info, content_type = "application/json")
 
-# def ocr(request):
+def ocrAPI(request):
+  url = "http://61.72.55.130:8999/ocr/imgUploadMulti"
+  if request.method =="POST":
+    form_data = request.POST
+    print('form_data:', form_data)
+    dict_data = form_data.dict()
+    print('dict_data:', dict_data)
+    json_data = json.dumps(dict_data)
+    print('json_data_af:', json_data)
+    
+    file = dict_data['file']     #이미지데이터보내기(인코딩)
+    ocrmode = dict_data['ocrmode']
+    metaId = dict_data['metaId']
+    docModelId = dict_data['docModelId']
+    
+    print("file : %s, ocrmode : %s" % (file, ocrmode))
+    ocr_res = requests.post(url, json=json_data)
+    print("ocr_res : ", ocr_res)
+    header = {}
+    return render(request, 'ocrTest/index.html', {'ocr-result' : ocr_res})
   
-#   return render(request, 'ocrTest/rank.html')
+  
+  return render(request, 'ocrTest/index.html')
         
 
 # @csrf_exempt
