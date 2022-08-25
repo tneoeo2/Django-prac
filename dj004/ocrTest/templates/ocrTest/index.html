@@ -18,6 +18,8 @@
     <img src = "{{mainphoto}}" alt="" height="600" width="600" >
     {% elif mainphoto != None %}
     <img src = "/media/{{mainphoto}}" alt="" height="600" width="600" >
+    {% else %}
+    <img alt="" height="600" width="600" >
     {% endif %}
 
     
@@ -31,10 +33,11 @@
   </div>
 </div>
 <div class="bs-component mb-4">
+{% comment %} <form action="/ocr/" method="post" enctype="multipart/form-data"> {% endcomment %}
 <form action="/ocr/" method="post" enctype="multipart/form-data">
   {% csrf_token %}
-  <input class="form-control img-name" id="formFile" type="file" name="mainphoto">
-  <input class="btn btn-secondary my-2 my-sm-0" type="submit" value="이미지 업로드">
+  <input class="form-control img-name" id="formFile" type="file" name="file">
+  <input class="btn btn-secondary my-2 my-sm-0 submit-btn" type="submit" value="이미지 업로드" style="display:none;">
   {% comment %} <input class="btn btn-secondary my-2 my-sm-0 ocr-btn" type="submit" value="OCR 결과확인"> {% endcomment %}
   <button class="btn btn-secondary my-2 my-sm-0 ocr-btn" type="button" value="OCR 결과확인" onclick=fnRecoFetch()>OCR </button>
 </form>  
@@ -44,25 +47,29 @@
 
 <script type="text/javascript">
  
+  let ocrResult = '';
+  
+
+
   function fnRecoFetch(img){
-    let goUrl = "http://61.72.55.130:8999/ocr/imgUploadMulti/";
+    let goUrl = "http://61.72.55.130:8999/ocr/imgUploadMulti";
+
     console.log("*************fnReocAjax*******************");
 
     //let imgSrc = document.querySelector('.image-container img').src;
     fileInput = document.querySelector("#formFile");
 
     let myFormData = new FormData();
-    console.log("fileInput.files[0].name : "  + fileInput.files[0].name);
-    myFormData.append('file', fileInput.files[0].name);     //이미지 파일 경로
+    console.log("fileInput.files[0].name : "  + fileInput.files[0]);
+    myFormData.append('file', fileInput.files[0]);     //이미지 파일 경로
     myFormData.append('ocrmode', "0");
     myFormData.append('metaId', "0");
     myFormData.append('docModelId', "0");
-
+    blobURL = window.URL.createObjectURL(fileInput.files[0]);
+    document.querySelector('.image-container img').src = blobURL;
     fetch(goUrl, {
       method: 'post',
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin':'*',
         "X-CSRFToken": '{{csrf_token}}',
     },
     body: myFormData
@@ -78,7 +85,14 @@
       return result
     })
     .then(result => {
+      resultElm = document.querySelector('.result-container');
       console.log("=====result =====" +"\n" +result);
+      ocrResult = result['detectInfo'][0]['result'];
+      resultElm.innerText = '';
+      for (var i = 0; i < ocrResult.length; i++) {
+          resultElm.innerText += ocrResult[i]['ocrText'];
+      }
+      
     })
     .catch(error => {
         console.log(error);
