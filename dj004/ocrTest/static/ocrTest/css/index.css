@@ -11,10 +11,11 @@
 
 .bs-component form{
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .form-control{
+  width: 40%;
   margin-right: 20px;
 }
 
