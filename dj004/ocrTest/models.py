@@ -1,4 +1,3 @@
-from email.mime import image
 from django.db import models
 
 # Create your models here.
@@ -7,7 +6,7 @@ class Post(models.Model):
   photoname = models.CharField(max_length=50)
 
   def __str__(self):
-    return self.photoname  
+    return self.mainphoto  
 
 class Ranking(models.Model):
   pub_date = models.DateTimeField("data published...")

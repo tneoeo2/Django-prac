@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="rank-container">
+    {% if date_list %}
+
+    {% for date in date_list %}
+    <div>
+    <li><a href="{% url 'ocrTest:rankdetail' %}" onclick=goRankdetail()>{{date|date:"Y-m-d"}}</li>
+    {% comment %} <li>{{ranking.title}}</li>
+    <li><img src={{ranking.image}}></li>
+    <div class="date_container"> 
+      <li>{{ranking.start_date}}</li>
+      <li>{{ranking.end_date}}</li>
+    </div>
+    <li>{{ranking.place}}</li>
+    <li>{{ranking.ranking}}</li> {% endcomment %}
+  </div>
+  {% endfor %}
+
+  {% endif %}
+  </div>
+
+  <script type="text/javascript">
+    function goRankdetail() {
+      let f = document.createElement('form');
+          f.setAttribute('method', 'post');
+          f.setAttribute('action', document.querySelector('a'));
+          document.body.appendChild(f);
+          f.submit();
+    }
+  </script>
+</body>
+</html>

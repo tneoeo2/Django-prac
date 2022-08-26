@@ -1,10 +1,11 @@
-from django.urls import path
+from django.urls import path, re_path
 from .views import *
 
 #이미지 업로드
 from django.conf.urls.static import static
 from django.conf import settings
 
+ap_name = 'ocrTest'      #app namespace 
 
 urlpatterns = [
     # path('', index, name='index'),
@@ -13,6 +14,10 @@ urlpatterns = [
     path('save/', save, name='save'),
     path('ocr/', ocr, name='ocr'),
     path('ocrAPI/', ocrAPI, name='ocrAPI'),
+    path('imgs/', ImgView.as_view(), name='imgs'),
+    path('rankinglist/', rankinglist, name='rankinglist'),
+    # path(r'^(?P<year>[0-9]{4}/?P<month>[0-9]{2}/?P<date>[0-9]{2}/rankingdetail/', RankingDetailView.as_view(), name='rankingdetail'),
+    path('rankingdetail/', rankingdetail, name='rankingdetail'),
 ]
 
 

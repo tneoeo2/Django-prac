@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="rank-container">
+    {% if ranking_list %}
+
+    {% for rank in ranking_list %}
+    <div>
+    <li>{{rank.title}}</li>
+    <li><img src={{rank.image}}></li>
+    <div class="date_container"> 
+      <li>{{rank.start_date}}</li>
+      <li>{{rank.end_date}}</li>
+    </div>
+    <li>{{rank.place}}</li>
+    <li>{{rank.ranking}}</li>
+  </div>
+  {% endfor %}
+
+  {% endif %}
+  </div>
+</body>
+</html>

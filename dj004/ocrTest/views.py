@@ -1,17 +1,78 @@
-from urllib import response
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.urls import resolve
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
-from .models import  Ranking
-
-from .models import Post
+from .models import  Post, Ranking
+from django.views import generic
 from .semi_crawler import *
 
+import datetime
 import requests
 import json
+
+
+class ImgView(generic.ListView):
+  model = Post
+  
+  template_name = 'ocrTest/imglist.html'     #템플릿 파일 위치 지정
+  context_object_name = 'images'      #템플릿파일로 넘겨주는 객체리스트 이름지정 : html파일에서 설정한 이름으로 객체를 가져올 수 있다..!!
+  paginate_by: 5      #한페이지에 보여줄 객체의 개수   (페이징)
+  
+def rankinglist(request):
+  date_list = list(Ranking.objects.dates("pub_date", "day"))
+  
+  return render(request, 'ocrTest/ranklist.html',{'date_list':date_list})
+  
+
+# #* 오늘 크롤링한 랭킹 데이터만 보여준다.
+# class RankingDetailView(generic.DetailView):  
+#   model = Ranking
+  
+#   template_name = 'ocrTest/rankdetail.html'
+  
+  
+#   def get_ranking_queryset(self):         #해당날짜의 최신 50개 정보(50위까지) 가져오기 
+#     # date : 2022-08-06 형식
+#     print("TESTESETESTESTESTSETESTESETESTESTESTSETESTESETESTESTESTSE")
+#     current_url = resolve(self.request.path_info).url_name
+    
+#     print("date : ",current_url)
+#     date = current_url.split("/")
+#     year = date[0]
+#     month = date[1]
+#     day = date[2]
+  
+#     t_date = datetime.date(year, month, day)
+#     ranking_list = Ranking.objects.exclude(
+#         pub_date = t_date
+#         ).order_by('pub_date')[:50]
+    
+#     return  ranking_list
+      
+#* 오늘 크롤링한 랭킹 데이터만 보여준다.
+def rankingdetail(request):  
+  model = Ranking
+  
+  #해당날짜의 최신 50개 정보(50위까지) 가져오기 
+  # date : 2022-08-06 형식
+  print("TESTESETESTESTESTSETESTESETESTESTESTSETESTESETESTESTESTSE")
+  
+  print("date : ",current_url)
+  date = current_url.split("/")
+  year = date[0]
+  month = date[1]
+  day = date[2]
+
+  t_date = datetime.date(year, month, day)
+  ranking_list = Ranking.objects.exclude(
+      pub_date = t_date
+      ).order_by('pub_date')[:50]
+  
+  return render(request,  'ocrTest/rankingdetail.html', {"ranking_list" : ranking_list})
+      
 
 ##후에 api로 ocr 결과 받아주는걸로 변경(사진 저장X)
 def ocr(request):
@@ -114,3 +175,10 @@ def save(request):
     
   return render(request, 'ocrTest/rank.html')
     
+  
+class ImgListView(generic.ListView):
+  template_name = ""
+  
+    
+# class DetailView(generic.DetailView):
+  
