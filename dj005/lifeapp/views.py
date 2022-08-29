@@ -11,6 +11,16 @@ topics = [
 
 def HTMLTemplate(articleTag, id=None):     #재사용가능한 템플릿으로 분리
   global topics
+  contextUI = ''
+  if id != None:     #id값이 존재할 경우만 delete 버튼 표시
+    contextUI = f'''
+            <li>
+              <form action="/delete/" method="post">
+              <input type="hidden" name="id" value="{id}"/>
+                <input type="submit" value="delete" />
+              </form>
+            </li>
+          '''
   ol = ''
   for topic in topics:
     ol += f'<li><a href="/read/{topic["id"]}">{topic["title"]}</a></li>'        
@@ -24,12 +34,7 @@ def HTMLTemplate(articleTag, id=None):     #재사용가능한 템플릿으로 �
               {articleTag}
               <ul>
                 <li><a href="/create/">create</a></li>
-                <li>
-                  <form action="/delete/" method="post">
-                  <input type="hidden" name="id" value="{id}"/>
-                   <input type="submit" value="delete" />
-                  </form>
-                </li>
+                {contextUI}
               </ul>
             </body>
             </html>
