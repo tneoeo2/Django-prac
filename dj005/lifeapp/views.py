@@ -9,7 +9,7 @@ topics = [
   {'id': 3, 'title': 'Model', 'body': 'Model is ..'},
 ]
 
-def HTMLTemplate(articleTag):     #재사용가능한 템플릿으로 분리
+def HTMLTemplate(articleTag, id=None):     #재사용가능한 템플릿으로 분리
   global topics
   ol = ''
   for topic in topics:
@@ -24,6 +24,12 @@ def HTMLTemplate(articleTag):     #재사용가능한 템플릿으로 분리
               {articleTag}
               <ul>
                 <li><a href="/create/">create</a></li>
+                <li>
+                  <form action="/delete/" method="post">
+                  <input type="hidden" name="id" value="{id}"/>
+                   <input type="submit" value="delete" />
+                  </form>
+                </li>
               </ul>
             </body>
             </html>
@@ -36,6 +42,15 @@ def index(request):     #request : 요청과 관련된 객체(이름 바꿔도 �
     <p>This is article Tag.</p>
   '''
   return HttpResponse(HTMLTemplate(article))
+  
+def read(request, id):
+  global topics 
+  article = ''
+  for topic in topics: 
+    if topic['id'] == int(id):    #선택한 id에 해당하는 페이지에 body 값 가져와 띄우기
+      article = f'<h2>{topic["title"]}</h2>{topic["body"]}'
+  
+  return HttpResponse(HTMLTemplate(article, id))
 
 @csrf_exempt
 def create(request):
@@ -59,13 +74,16 @@ def create(request):
     url = '/read/'+ str(nextId)
     nextId = nextId + 1
     return redirect(url)      #생성된 페이지 url로 이동
-  
-def read(request, id):
-  global topics 
-  article = ''
-  for topic in topics: 
-    if topic['id'] == int(id):    #선택한 id에 해당하는 페이지에 body 값 가져와 띄우기
-      article = f'<h2>{topic["title"]}</h2>{topic["body"]}'
-  
-  return HttpResponse(HTMLTemplate(article))
 
+@csrf_exempt
+def delete(request):
+  global topics
+  
+  if request.method == 'POST':
+    id = request.POST['id']
+    newTopics = []
+    for topic in topics:
+      if topic['id'] != int(id):
+          newTopics.append(topic)
+    topics = newTopics
+    return redirect('/')
