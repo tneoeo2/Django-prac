@@ -20,5 +20,6 @@ urlpatterns = [    #라우팅할 경로 입력
       path('', views.index),
       path('create/', views.create),
       path('read/<id>/', views.read),
+      path('update/<id>/', views.update),
       path('delete/', views.delete),
 ]
