@@ -12,7 +12,7 @@
 
     {% for date in date_list %}
     <div>
-    <li><a href="{% url 'ocrTest:rankdetail' %}" onclick=goRankdetail()>{{date|date:"Y-m-d"}}</li>
+    <li><a href="/rankdetail/{{date|date:"Y"}}/{{date|date:"m"}}/{{date|date:"d"}}/" onclick=goRankdetail()>{{date|date:"Y-m-d"}}</li>
     {% comment %} <li>{{ranking.title}}</li>
     <li><img src={{ranking.image}}></li>
     <div class="date_container"> 
@@ -29,11 +29,11 @@
 
   <script type="text/javascript">
     function goRankdetail() {
-      let f = document.createElement('form');
-          f.setAttribute('method', 'post');
-          f.setAttribute('action', document.querySelector('a'));
-          document.body.appendChild(f);
-          f.submit();
+      let f = document.createElement('form');
+        f.setAttribute('method','post');
+        f.setAttribute('action',document.querySelector('a'));
+        document.body.appendChild(f);
+        f.submit();
     }
   </script>
 </body>

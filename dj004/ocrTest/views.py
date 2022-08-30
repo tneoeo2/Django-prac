@@ -21,7 +21,7 @@ class ImgView(generic.ListView):
   context_object_name = 'images'      #템플릿파일로 넘겨주는 객체리스트 이름지정 : html파일에서 설정한 이름으로 객체를 가져올 수 있다..!!
   paginate_by: 5      #한페이지에 보여줄 객체의 개수   (페이징)
   
-def rankinglist(request):
+def ranklist(request):
   date_list = list(Ranking.objects.dates("pub_date", "day"))
   
   return render(request, 'ocrTest/ranklist.html',{'date_list':date_list})
@@ -53,25 +53,31 @@ def rankinglist(request):
 #     return  ranking_list
       
 #* 오늘 크롤링한 랭킹 데이터만 보여준다.
-def rankingdetail(request):  
+def rankdetail(request, year, month, date):  
+  print("TESTESETESTESTESTSETESTESETESTESTESTSETESTESETESTESTESTSE", year, month, date)
   model = Ranking
   
   #해당날짜의 최신 50개 정보(50위까지) 가져오기 
   # date : 2022-08-06 형식
-  print("TESTESETESTESTESTSETESTESETESTESTESTSETESTESETESTESTESTSE")
   
-  print("date : ",current_url)
-  date = current_url.split("/")
-  year = date[0]
-  month = date[1]
-  day = date[2]
+  # print("date : ",current_url)
+  # date = current_url.split("/")
+  
+  year = int(year)
+  month = int(month)
+  date = int(date)
 
-  t_date = datetime.date(year, month, day)
-  ranking_list = Ranking.objects.exclude(
-      pub_date = t_date
-      ).order_by('pub_date')[:50]
+  t_date = datetime.date(year, month, date)
   
-  return render(request,  'ocrTest/rankingdetail.html', {"ranking_list" : ranking_list})
+  print("날짜 확인 :   ", t_date)
+  
+  ranking_list = reversed(Ranking.objects.filter(
+      pub_date__startswith = t_date
+      ).order_by("-pub_date")[:50])       #내림차순으로 정렬
+  
+  print("ranking_list : ", ranking_list)
+  
+  return render(request,  'ocrTest/rankdetail.html', {"ranking_list" : ranking_list})
       
 
 ##후에 api로 ocr 결과 받아주는걸로 변경(사진 저장X)

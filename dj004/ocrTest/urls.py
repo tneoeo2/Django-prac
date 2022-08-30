@@ -5,7 +5,7 @@ from .views import *
 from django.conf.urls.static import static
 from django.conf import settings
 
-ap_name = 'ocrTest'      #app namespace 
+app_name = 'ocrTest'      #app namespace 
 
 urlpatterns = [
     # path('', index, name='index'),
@@ -15,9 +15,9 @@ urlpatterns = [
     path('ocr/', ocr, name='ocr'),
     path('ocrAPI/', ocrAPI, name='ocrAPI'),
     path('imgs/', ImgView.as_view(), name='imgs'),
-    path('rankinglist/', rankinglist, name='rankinglist'),
+    path('ranklist/', ranklist, name='ranklist'),
     # path(r'^(?P<year>[0-9]{4}/?P<month>[0-9]{2}/?P<date>[0-9]{2}/rankingdetail/', RankingDetailView.as_view(), name='rankingdetail'),
-    path('rankingdetail/', rankingdetail, name='rankingdetail'),
+    path('rankdetail/<year>/<month>/<date>/', rankdetail, name='rankdetail'),
 ]
 
 
