@@ -91,7 +91,7 @@ def ocr(request):
         new_photo = request.POST['file']
         print("new_photo-------",new_photo)
       
-        return render(request, 'ocrTest/index.html', {'mainphoto':new_photo})
+        return render(request, 'ocrTest/ocr.html', {'mainphoto':new_photo})
       
       except:
   
@@ -107,9 +107,9 @@ def ocr(request):
           )
           print("image: ", request.FILES['file'])
   else:
-    return render(request,'ocrTest/index.html')
+    return render(request,'ocrTest/ocr.html')
   
-  return render(request, 'ocrTest/index.html', {'mainphoto': request.FILES['file']})
+  return render(request, 'ocrTest/ocr.html', {'mainphoto': request.FILES['file']})
 
 def rank(request):
   
@@ -147,10 +147,10 @@ def ocrAPI(request):
     ocr_res = requests.post(url, json=json_data)
     print("ocr_res : ", ocr_res)
     header = {}
-    return render(request, 'ocrTest/index.html', {'ocr-result' : ocr_res})
+    return render(request, 'ocrTest/ocr.html', {'ocr-result' : ocr_res})
   
   
-  return render(request, 'ocrTest/index.html')
+  return render(request, 'ocrTest/ocr.html')
         
 
 # @csrf_exempt
@@ -181,10 +181,24 @@ def save(request):
     
   return render(request, 'ocrTest/rank.html')
     
-  
-class ImgListView(generic.ListView):
-  template_name = ""
-  
     
-# class DetailView(generic.DetailView):
+  
+def index(request):
+  return render(request, 'index.html')
+
+
+# def login(request):
+#   if request.method == 'POST':
+    
+#     return render(request, 'ocrTest/index.html')
+    
+#   else :    #get request시 
+    
+#     return render(request, 'ocrTest/login.html')
+    
+    
+    
+
+def signup(request):
+  return render(request, 'ocrTest/signup.html')
   
