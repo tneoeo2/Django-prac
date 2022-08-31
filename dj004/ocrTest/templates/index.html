@@ -18,7 +18,6 @@
       <a class="nav-link" href="{% url 'ocrTest:login' %}">로그인</a>
       <a class="nav-link" href="{% url 'ocrTest:signup' %}">회원가입</a>
       {% endif %}
-      {% comment %} <a class="nav-link" href="{ % url 'ocrTest:logout' % }">로그아웃</a> {% endcomment %}
     </ul>
   </div>
 
@@ -28,7 +27,7 @@
     {% endblock %}
   </div>
   <div class="page-container">
-    {% if user.is_authenticated %} 
+    {% if user.is_authenticated %}    <!--로그인 되어 있는 경우에만-->
     <ul class="list-group">
       <li class="list-group-item">
         <a href="{% url 'ocrTest:ocr' %}" class="text-secondary">

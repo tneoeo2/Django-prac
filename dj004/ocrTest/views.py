@@ -4,9 +4,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.urls import resolve
 from django.views import generic
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
 from django.views.decorators.csrf import csrf_exempt
+
 from .models import  Post, Ranking
 from django.views import generic
+from .forms import UserForm
 from .semi_crawler import *
 
 import datetime
@@ -26,7 +30,6 @@ def ranklist(request):
   
   return render(request, 'ocrTest/ranklist.html',{'date_list':date_list})
   
-
 # #* 오늘 크롤링한 랭킹 데이터만 보여준다.
 # class RankingDetailView(generic.DetailView):  
 #   model = Ranking
@@ -200,5 +203,17 @@ def index(request):
     
 
 def signup(request):
-  return render(request, 'ocrTest/signup.html')
+  if request.method == "POST":     #POST요청일 시, 화면에서 입력한 데이터로 사용자 생성
+    form  = UserForm(request.POST)
+    if form.is_valid():    #form값 유효성 확인
+      form.save()
+      username = form.cleaned_data.get('username')          
+      raw_password = form.cleaned_data.get('password1')      #form의 입력값 개별적으로 얻고 싶은경우 사용
+      user = authenticate(username=username, password=raw_password) #사용자 인증담당(사용자명, 비밀번호 검증)
+      auth_login(request, user)  #로그인 담당(사용자 세션을 생성한다.)
+      return redirect('/')
+  else:       #GET 요청일 시, 회원가입 화면 보여준다.
+    form = UserForm()
+  return render(request, 'user/signup.html', {'form': form})
+  
   
